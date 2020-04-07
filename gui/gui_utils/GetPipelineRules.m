@@ -18,6 +18,7 @@ function pipeRules = GetPipelineRules()
 %                     'degree2pixel';
 %                     'filtereyeposition';
 %                     'makereference';
+%                     'makereference_aoslo';
 %                     'rereference';
 %                     'findsaccadesanddrifts'};
 listing = dir([fileparts(which('StripAnalysis')) filesep '*.m']);

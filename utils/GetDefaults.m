@@ -318,7 +318,55 @@ switch module
         
         % axes handle tags.. useful only in GUI mode
         axesHandles = {'imAx','peakAx','motAx'};
+    case 'makereference_aoslo'
         
+        % default values
+        default.overwrite = false;
+        default.enableVerbosity = 'frame';
+        default.badFrames = false;
+        default.rowNumbers = []; % fail, if not provided
+        default.position = []; % fail, if not provided
+        default.timeSec = []; % fail, if not provided
+        default.peakValueArray = []; % fail, if not provided
+        default.oldStripHeight = []; % fail, if not provided
+        default.newStripHeight = 3;
+        default.newStripWidth = [];
+        default.axesHandles = [];
+        default.subpixelForRef = 0;
+        default.minPeakThreshold = 0.5;
+        default.maxMotionThreshold = 0.06; % proportion of frame size
+        default.trim = [0 0];
+        default.enhanceStrips = true;
+        default.makeStabilizedVideo = false;
+        
+        % validation functions 
+        validate.overwrite = @islogical;
+        validate.enableVerbosity = @(x) CategoryOrLogicalOrNumeric(x,{'none','video','frame'});
+        validate.badFrames = @(x) all(islogical(x));
+        validate.rowNumbers = @(x) (length(x)>=1 & IsPositiveInteger(x));
+        validate.position = @(x) (isnumeric(x) & size(x,1)>=1 & size(x,2)==2);
+        validate.timeSec = @(x) (isnumeric(x) & size(x,1)>=1 & size(x,2)==1);
+        validate.peakValueArray = @IsNonNegativeRealNumber;
+        validate.oldStripHeight = @IsPositiveInteger;
+        validate.newStripHeight = @IsPositiveInteger;
+        validate.newStripWidth = @(x) isempty(x) | IsPositiveInteger(x);
+        validate.axesHandles = @(x) isempty(x) | all(ishandle(x));
+        validate.subpixelForRef = @IsNaturalNumber;
+        validate.minPeakThreshold = @IsNonNegativeRealNumber;
+        validate.maxMotionThreshold = @(x) IsPositiveRealNumber(x) & (x<=1);
+        validate.trim = @(x) all(IsNaturalNumber(x)) & (length(x)==2);
+        validate.enhanceStrips = @islogical;
+        validate.makeStabilizedVideo = @islogical;
+        
+        % list which modules can preceed or succeed this one
+        before = {'degree2pixel','stripanalysis'};
+        after = {'none','stripanalysis'};
+        
+        % keyword to be used in filenames
+        keyword = 'reference';
+        
+        % axes handle tags.. useful only in GUI mode
+        axesHandles = {'imAx','peakAx','motAx'};    
     case 'rereference'
         
         % default values

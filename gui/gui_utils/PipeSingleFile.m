@@ -104,6 +104,8 @@ for p = startAt:length(pipeline)
             processedVideo = inputArgument;
         case 'MakeReference'
             inputArgument = processedVideo;
+        case 'MakeReference_AOSLO'
+            inputArgument = processedVideo;
         otherwise
             % do nothing
     end
